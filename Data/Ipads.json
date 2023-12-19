@@ -1,11 +1,18 @@
 {
-  "moddate": 24236346,
+    "moddate": 1702976491,
+    "opendate": 1702982404,
     "Ipads": {
-      "IT18563": {
-        "name": "Benno Schörmann",
-        "Klasse": 13},
-      "IT18363": {
-        "name": "Benno Schörmann",
-        "Klasse": 13}
+        "IT18563": {
+            "moddate": 1223,
+            "version": "",
+            "surname": "Benno",
+            "name": "Sch\u00f6rmann",
+            "class": 13,
+            "subclass": null,
+            "repair": false,
+            "repairdate": 122,
+            "dosys": false,
+            "comments": ""
+        }
     }
 }
