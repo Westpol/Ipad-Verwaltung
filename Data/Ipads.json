@@ -1,6 +1,6 @@
 {
     "moddate": 1702976491,
-    "opendate": 1702982404,
+    "opendate": 1702985817,
     "Ipads": {
         "IT18563": {
             "moddate": 1223,
@@ -9,6 +9,32 @@
             "name": "Sch\u00f6rmann",
             "class": 13,
             "subclass": null,
+            "repair": false,
+            "repairdate": 122,
+            "dosys": false,
+            "comments": ""
+        },
+        "IT080056": {
+            "moddate": 1702985869,
+            "version": "9Gen",
+            "surname": "Erik",
+            "name": "Degenhardt",
+            "class": 7,
+            "subclass": 5,
+            "repair": false,
+            "repairdate": 122,
+            "dosys": false,
+            "comments": ""
+        }
+    },
+    "PCs": {
+        "IT080056": {
+            "moddate": 1702985869,
+            "version": "9Gen",
+            "surname": "Erik",
+            "name": "Degenhardt",
+            "class": 7,
+            "subclass": 5,
             "repair": false,
             "repairdate": 122,
             "dosys": false,
