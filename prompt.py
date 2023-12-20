@@ -15,8 +15,10 @@ class Backend:
         version: str = str(input("Version: "))
         surname: str = input("Surname: ")
         name: str = input("Name: ")
-        classNum: int = int(input("Class: "))
-        subclass: int = int(input("Subclass: "))
+        classNum = input("Class: ")
+        subclass: str = input("Subclass: ")
+        if subclass == "":
+            print("JUUUUU")
         Data = {itnum: {"moddate": int(time.time()), "version": version, "surname": surname, "name": name, "class": classNum, "subclass": subclass, 'repair': False, 'repairdate': 0, 'dosys': False, 'comments': ''}}
         self.Ipads["Ipads"].update(Data)
 
