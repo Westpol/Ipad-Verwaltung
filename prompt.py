@@ -1,5 +1,6 @@
 import json
-import tkinter
+import tkinter as tk
+import tkinter.ttk as ttk
 import time
 
 
@@ -17,8 +18,6 @@ class Backend:
         name: str = input("Name: ")
         classNum = input("Class: ")
         subclass: str = input("Subclass: ")
-        if subclass == "":
-            print("JUUUUU")
         Data = {itnum: {"moddate": int(time.time()), "version": version, "surname": surname, "name": name, "class": classNum, "subclass": subclass, 'repair': False, 'repairdate': 0, 'dosys': False, 'comments': ''}}
         self.Ipads["Ipads"].update(Data)
 
