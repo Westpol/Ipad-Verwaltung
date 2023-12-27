@@ -1,4 +1,5 @@
 import json
+import PySimpleGUI as psg
 import time
 
 
@@ -22,7 +23,7 @@ class Backend:
             return True
         return False
 
-    def print_ipad(self, itnum: str):
+    def get_ipad(self, itnum: str):
         if self.inlist(itnum):
             return self.Ipads["Ipads"][itnum]
         raise "given IT-number not in system, bofore requesting directly, please check with inlist()"
@@ -34,13 +35,22 @@ class Backend:
 class Frontend:
     def __init__(self):
         self.backend = Backend()
-        self.data = self.backend.Ipads
+        self.welcome = [[psg.Text("Scan Barcode in this Textbox"), psg.Input(key="IT-num")],
+                        [psg.Button('Submit', visible=False, bind_return_key=True)]]
+        self.window = None
+        self.event, self.values = None, None
+
+    def begin(self):
+        self.window = psg.Window('Ipad-Verwaltung', self.welcome)
+        self.event, self.values = self.window.read()
+        print(self.values["IT-num"])
+        self.window.close()
+        self.window = psg.Window('Ipad-Verwaltung', self.welcome)
+        self.event, self.values = self.window.read()
+        print(self.values["IT-num"])
 
     def close(self):
         self.backend.close()
-
-    def dump(self):
-        print(self.data)
 
     def add(self, itnum: str):
         version: str = str(input("Version: "))
@@ -50,17 +60,21 @@ class Frontend:
         subclass: str = input("Subclass: ")
         self.backend.addnew(itnum, version, surname, name, classNum, subclass)
 
+    def show(self, itnum: str):
+        print(self.backend.get_ipad(itnum))
+        showStats = [[],
+                     [],
+                     [],
+                     [],
+                     []]
+
     def get_num(self):
-        itnum: str = str(input("Scan Barcode: "))
-        if self.backend.inlist(itnum):
-            print(self.backend.print_ipad(itnum))
-            if input("Do you want to delete the entrance? [delete/n]") == "delete":
-                self.backend.delete_ipad(itnum)
-        else:
-            if input("IT number not in system, want to add? [y/n]") == "y":
-                self.add(itnum)
-            else:
-                print("mkayyyy")
+        welcome = self.welcome
+        self.window = psg.Window('Ipad-Verwaltung', welcome)
+        event, values = self.window.read()
+        self.window.close()
+        if self.backend.inlist(values["IT-num"]):
+            self.show(values["IT-num"])
 
 
 if __name__ == "__main__":
