@@ -1,5 +1,5 @@
 import json
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 import time
 
@@ -36,11 +36,32 @@ class Backend:
 class Frontend:
     def __init__(self):
         self.backend = Backend()
+        self.root = tk.Tk()
+        self.content = ttk.Frame(self.root)
+
+        onevar = tk.BooleanVar(value=True)
+        twovar = tk.BooleanVar(value=False)
+        threevar = tk.BooleanVar(value=True)
+
+        one = ttk.Checkbutton(self.content, text="One", variable=onevar, onvalue=True)
+        two = ttk.Checkbutton(self.content, text="Two", variable=twovar, onvalue=True)
+        three = ttk.Checkbutton(self.content, text="Three", variable=threevar, onvalue=True)
+        ok = ttk.Button(self.content, text="Okay")
+        cancel = ttk.Button(self.content, text="Cancel")
+
+        self.content.grid(column=0, row=0)
+
+        one.grid(column=0, row=1)
+        two.grid(column=1, row=2)
+        three.grid(column=2, row=3)
+        ok.grid(column=3, row=4)
+        cancel.grid(column=4, row=5)
 
     def close(self):
         self.backend.close()
 
     def mainloop(self):
+        self.root.mainloop()
         self.close()
 
 
