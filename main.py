@@ -43,6 +43,10 @@ class Frontend:
         twovar = tk.BooleanVar(value=False)
         threevar = tk.BooleanVar(value=True)
 
+        onevar.set(True)
+        twovar.set(False)
+        threevar.set(True)
+
         one = ttk.Checkbutton(self.content, text="One", variable=onevar, onvalue=True)
         two = ttk.Checkbutton(self.content, text="Two", variable=twovar, onvalue=True)
         three = ttk.Checkbutton(self.content, text="Three", variable=threevar, onvalue=True)
