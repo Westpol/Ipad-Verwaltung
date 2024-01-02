@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import time
 
 
 class Frontend:
@@ -7,12 +8,18 @@ class Frontend:
         self.root = tk.Tk()
 
     def choose(self, guiselect: str):
+
         match guiselect:
             case "1":
                 self.welcome_screen()
             case _:
                 pass
+
         self.root.mainloop()
+
+    def destroy_wigets(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
     def welcome_screen(self):
 
@@ -40,7 +47,7 @@ class Frontend:
         one = ttk.Checkbutton(content, text="One", variable=onevar, onvalue=True)
         two = ttk.Checkbutton(content, text="Two", variable=twovar, onvalue=True)
         three = ttk.Checkbutton(content, text="Three", variable=threevar, onvalue=True)
-        ok = ttk.Button(content, text="Okay")
+        ok = ttk.Button(content, text="Remove Widgets", command=self.destroy_wigets)
         cancel = ttk.Button(content, text="Cancel")
 
         content.grid(column=0, row=0)
@@ -54,3 +61,4 @@ class Frontend:
 
 frontend = Frontend()
 frontend.choose(input("which gui to show?"))
+print([ m for m in dir(frontend) if not m.startswith('__')])
