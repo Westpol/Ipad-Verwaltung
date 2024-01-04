@@ -6,6 +6,7 @@ import time
 class Frontend:
     def __init__(self):
         self.root = tk.Tk()
+        self.root.geometry("{}x{}".format(960, 540))
 
     def choose(self, guiselect: str):
 
@@ -35,28 +36,14 @@ class Frontend:
         subMenu.add_cascade(label="New Database")
         subMenu.add_cascade(label="Export .xlsx")
 
-        content = ttk.Frame(self.root)
-        onevar = tk.BooleanVar(value=True)
-        twovar = tk.BooleanVar(value=False)
-        threevar = tk.BooleanVar(value=True)
+        style = ttk.Style()
+        style.configure("style1.TFrame", background="green")
+        style.configure("style1.welcome.TFrame", background="red")
+        style.configure("style1.exit.TFrame", background="yellow")
 
-        onevar.set(True)
-        twovar.set(False)
-        threevar.set(True)
-
-        one = ttk.Checkbutton(content, text="One", variable=onevar, onvalue=True)
-        two = ttk.Checkbutton(content, text="Two", variable=twovar, onvalue=True)
-        three = ttk.Checkbutton(content, text="Three", variable=threevar, onvalue=True)
-        ok = ttk.Button(content, text="Remove Widgets", command=self.destroy_wigets)
-        cancel = ttk.Button(content, text="Cancel")
-
-        content.grid(column=0, row=0)
-
-        one.grid(column=0, row=1)
-        two.grid(column=1, row=2)
-        three.grid(column=2, row=3)
-        ok.grid(column=3, row=4)
-        cancel.grid(column=4, row=5)
+        welcome_message = ttk.Frame(self.root, style="style1.TFrame")
+        welcome_message.configure(width=960, height=500)
+        welcome_message.grid()
 
 
 frontend = Frontend()
