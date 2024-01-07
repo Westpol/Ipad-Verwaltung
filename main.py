@@ -35,7 +35,7 @@ class Backend:
     def delete_ipad(self, itnum: str):
         del self.Ipads["Ipads"][itnum]
 
-    def keylogger(self, event):                                 # TODO: get scanned string by checkting time delta
+    def keylogger(self, event):
         if self.accept_scan:
             if event.keysym == "Return":
                 self.keyData.append(("\n", time.time()))
@@ -46,16 +46,16 @@ class Backend:
     def get_scan(self):
         self.itnum = ""
 
-        timeDelta = self.keyData[len(self.keyData) - 1][1]
-        tempString = ""
+        time_delta = self.keyData[len(self.keyData) - 1][1]
+        temp_string = ""
 
         for i in reversed(range(0, len(self.keyData) - 1)):
-            if 0.013 < timeDelta - self.keyData[i][1] < 0.019:
-                tempString += self.keyData[i][0]
+            if 0.013 < time_delta - self.keyData[i][1] < 0.019:
+                temp_string += self.keyData[i][0]
             else:
                 break
-            timeDelta = self.keyData[i][1]
-        self.itnum = tempString[::-1]
+            time_delta = self.keyData[i][1]
+        self.itnum = temp_string[::-1]
         print(self.itnum)
 
 
