@@ -11,6 +11,8 @@ class Backend:
         self.Ipads["opendate"] = int(time.time())
 
         self.keyData = []
+        self.itnum = ""
+        self.accept_scan = False
 
     def addnew(self, itnum: str, version: str, surname: str, name: str, class_num, subclass: str):      # creating a dict with new info and adding it to the existing dict
         data = {itnum: {"moddate": int(time.time()), "version": version, "surname": surname, "name": name, "class": class_num, "subclass": subclass, 'repair': False, 'repairdate': 0, 'dosys': False, 'comments': ''}}
@@ -33,10 +35,28 @@ class Backend:
     def delete_ipad(self, itnum: str):
         del self.Ipads["Ipads"][itnum]
 
-    def keylogger(self, event):
-        self.keyData.append((event.char, time.time()))
-        if event.keysym == "Return":
-            pass
+    def keylogger(self, event):                                 # TODO: get scanned string by checkting time delta
+        if self.accept_scan:
+            if event.keysym == "Return":
+                self.keyData.append(("\n", time.time()))
+                self.get_scan()
+            else:
+                self.keyData.append((event.char, time.time()))
+
+    def get_scan(self):
+        self.itnum = ""
+
+        timeDelta = self.keyData[len(self.keyData) - 1][1]
+        tempString = ""
+
+        for i in reversed(range(0, len(self.keyData) - 1)):
+            if 0.013 < timeDelta - self.keyData[i][1] < 0.019:
+                tempString += self.keyData[i][0]
+            else:
+                break
+            timeDelta = self.keyData[i][1]
+        self.itnum = tempString[::-1]
+        print(self.itnum)
 
 
 class Frontend:
@@ -73,6 +93,7 @@ class Frontend:
         welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
         manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
         manual_search.pack(anchor="w", side="bottom")
+        self.backend.accept_scan = True
 
     def close(self):
         self.backend.close()
