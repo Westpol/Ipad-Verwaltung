@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 import time
 
 
@@ -7,6 +6,11 @@ class Frontend:
     def __init__(self):
         self.root = tk.Tk()
         self.root.geometry("{}x{}".format(960, 540))
+        self.root.minsize(960, 540)
+        self.root.maxsize(960, 540)
+        self.root.bind("<KeyPress>", self.print_keys)
+        self.keyPresses = []
+        #self.root.config(bg="red")
 
     def choose(self, guiselect: str):
 
@@ -36,14 +40,17 @@ class Frontend:
         subMenu.add_cascade(label="New Database")
         subMenu.add_cascade(label="Export .xlsx")
 
-        style = ttk.Style()
-        style.configure("style1.TFrame", background="green")
-        style.configure("style1.welcome.TFrame", background="red")
-        style.configure("style1.exit.TFrame", background="yellow")
+        welcome_screen = tk.Label(self.root, text="Scan Ipad to see Information...", font=("Arial", 30))
+        welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
+        manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
+        manual_search.pack(anchor="w", side="bottom")
 
-        welcome_message = ttk.Frame(self.root, style="style1.TFrame")
-        welcome_message.configure(width=960, height=500)
-        welcome_message.grid()
+    def print_keys(self, event):
+        self.keyPresses.append((event.char, time.time()))
+        lasti = self.keyPresses[0][1]
+        for i in self.keyPresses:
+            print("delta: " + str(i[1]-lasti))
+            lasti = i[1]
 
 
 frontend = Frontend()
