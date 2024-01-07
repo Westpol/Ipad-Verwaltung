@@ -2,6 +2,13 @@ import json
 import tkinter as tk
 import time
 
+''' 
+TODO:
+- sort variables (frontend / backend)
+- assign every job to frontend / backend
+- show the info in a useful way
+'''
+
 
 class Backend:
     def __init__(self):     # loading json file and converting it into a dict
@@ -35,15 +42,7 @@ class Backend:
     def delete_ipad(self, itnum: str):
         del self.Ipads["Ipads"][itnum]
 
-    def keylogger(self, event):
-        if self.accept_scan:
-            if event.keysym == "Return":
-                self.keyData.append(("\n", time.time()))
-                self.get_scan()
-            else:
-                self.keyData.append((event.char, time.time()))
-
-    def get_scan(self):
+    def get_scan(self):     # returns itnum
         self.itnum = ""
 
         time_delta = self.keyData[len(self.keyData) - 1][1]
@@ -56,7 +55,8 @@ class Backend:
                 break
             time_delta = self.keyData[i][1]
         self.itnum = temp_string[::-1]
-        print(self.itnum)
+
+        return self.itnum
 
 
 class Frontend:
@@ -67,11 +67,12 @@ class Frontend:
         self.root.geometry("{}x{}".format(960, 540))
         self.root.minsize(960, 540)
         self.root.maxsize(960, 540)
-        self.root.bind("<KeyPress>", self.backend.keylogger)
+        self.root.bind("<KeyPress>", self.keylogger)
 
         self.dropdown_menu()
 
         self.keyData = []
+        self.accept_scan = False
 
         self.welcome_screen()
 
@@ -93,7 +94,23 @@ class Frontend:
         welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
         manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
         manual_search.pack(anchor="w", side="bottom")
-        self.backend.accept_scan = True
+        self.accept_scan = True
+
+    def clear(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+    def keylogger(self, event):
+        if self.accept_scan:
+            if event.keysym == "Return":
+                self.backend.keyData.append(("\n", time.time()))
+                itnum = self.backend.get_scan()
+                if itnum is not None:
+                    self.clear()
+                    self.dropdown_menu()
+                    print(itnum)
+            else:
+                self.backend.keyData.append((event.char, time.time()))
 
     def close(self):
         self.backend.close()

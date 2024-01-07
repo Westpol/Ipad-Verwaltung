@@ -1,6 +1,6 @@
 {
     "moddate": 1702976491,
-    "opendate": 1704631134,
+    "opendate": 1704670921,
     "Ipads": {
         "IT18563": {
             "moddate": 1223,
@@ -35,6 +35,18 @@
             "subclass": "",
             "repair": false,
             "repairdate": 0,
+            "dosys": false,
+            "comments": ""
+        },
+        "20426071": {
+            "moddate": 1223,
+            "version": "",
+            "surname": "Benno",
+            "name": "Sch\u00f6rmann",
+            "class": 13,
+            "subclass": null,
+            "repair": false,
+            "repairdate": 122,
             "dosys": false,
             "comments": ""
         }
