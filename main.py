@@ -1,6 +1,5 @@
 import json
 import tkinter as tk
-from tkinter import ttk
 import time
 
 
@@ -36,30 +35,40 @@ class Backend:
 class Frontend:
     def __init__(self):
         self.backend = Backend()
+
         self.root = tk.Tk()
-        self.content = ttk.Frame(self.root)
+        self.root.geometry("{}x{}".format(960, 540))
+        self.root.minsize(960, 540)
+        self.root.maxsize(960, 540)
+        self.root.bind("<KeyPress>", self.keylogger)
 
-        onevar = tk.BooleanVar(value=True)
-        twovar = tk.BooleanVar(value=False)
-        threevar = tk.BooleanVar(value=True)
+        self.dropdown_menu()
 
-        onevar.set(True)
-        twovar.set(False)
-        threevar.set(True)
+        self.keyData = []
 
-        one = ttk.Checkbutton(self.content, text="One", variable=onevar, onvalue=True)
-        two = ttk.Checkbutton(self.content, text="Two", variable=twovar, onvalue=True)
-        three = ttk.Checkbutton(self.content, text="Three", variable=threevar, onvalue=True)
-        ok = ttk.Button(self.content, text="Okay")
-        cancel = ttk.Button(self.content, text="Cancel")
+        self.welcome_screen()
 
-        self.content.grid(column=0, row=0)
+    def dropdown_menu(self):
+        menu = tk.Menu(self.root)
+        self.root.config(menu=menu)
 
-        one.grid(column=0, row=1)
-        two.grid(column=1, row=2)
-        three.grid(column=2, row=3)
-        ok.grid(column=3, row=4)
-        cancel.grid(column=4, row=5)
+        sub_menu = tk.Menu()
+
+        menu.add_cascade(label="file", menu=sub_menu)
+
+        sub_menu.add_cascade(label="Import Database")
+        sub_menu.add_cascade(label="Export Database")
+        sub_menu.add_cascade(label="New Database")
+        sub_menu.add_cascade(label="Export .xlsx")
+
+    def welcome_screen(self):
+        welcome_screen = tk.Label(self.root, text="Scan Ipad to see Information...", font=("Arial", 30))
+        welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
+        manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
+        manual_search.pack(anchor="w", side="bottom")
+
+    def keylogger(self, event):
+        self.keyData.append((event.char, time.time()))
 
     def close(self):
         self.backend.close()
