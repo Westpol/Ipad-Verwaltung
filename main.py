@@ -10,6 +10,8 @@ class Backend:
             self.Ipads = json.load(jsonfile)
         self.Ipads["opendate"] = int(time.time())
 
+        self.keyData = []
+
     def addnew(self, itnum: str, version: str, surname: str, name: str, class_num, subclass: str):      # creating a dict with new info and adding it to the existing dict
         data = {itnum: {"moddate": int(time.time()), "version": version, "surname": surname, "name": name, "class": class_num, "subclass": subclass, 'repair': False, 'repairdate': 0, 'dosys': False, 'comments': ''}}
         self.Ipads["Ipads"].update(data)
@@ -31,6 +33,11 @@ class Backend:
     def delete_ipad(self, itnum: str):
         del self.Ipads["Ipads"][itnum]
 
+    def keylogger(self, event):
+        self.keyData.append((event.char, time.time()))
+        if event.keysym == "Return":
+            pass
+
 
 class Frontend:
     def __init__(self):
@@ -40,7 +47,7 @@ class Frontend:
         self.root.geometry("{}x{}".format(960, 540))
         self.root.minsize(960, 540)
         self.root.maxsize(960, 540)
-        self.root.bind("<KeyPress>", self.keylogger)
+        self.root.bind("<KeyPress>", self.backend.keylogger)
 
         self.dropdown_menu()
 
@@ -66,9 +73,6 @@ class Frontend:
         welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
         manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
         manual_search.pack(anchor="w", side="bottom")
-
-    def keylogger(self, event):
-        self.keyData.append((event.char, time.time()))
 
     def close(self):
         self.backend.close()
