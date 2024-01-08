@@ -7,6 +7,8 @@ import time
 '''
 Backend is ONLY used as the json Interface
 at the beninging, the data is stored in a dict variable, and saved when saved button is pressed 
+
+- Status label in frontend.showData über tk.stringVar ändern und nicht durch reset und call von showData
 '''
 
 
@@ -111,14 +113,14 @@ class Frontend:
 
         device = tk.Label(self.root, text="Gerät:", font=("Arial", 15))
 
-        if infos["repair"] is not False:
+        if infos["status"] == 1:
             status = tk.Label(self.root, text=str("Status:  In Reperatur"))
-        elif infos["dosys"] is not False:
+        elif infos["status"] == 2:
             status = tk.Label(self.root, text=str("Status:  Bei Dosys eingesendet"))
         else:
             status = tk.Label(self.root, text=str("Status:  Standard"))
 
-        history = tk.Button(self.root, text="History")
+        history = tk.Button(self.root, text="Status ändern", command=lambda: self.statusChange(infos, itnum))
 
         save_button = tk.Button(self.root, text="Save", command=lambda: self.saveData(infos, textfield.get("1.0", "end"), itnum))
         save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.saveAndExit(infos, textfield.get("1.0", "end"), itnum))
@@ -137,6 +139,16 @@ class Frontend:
         save_button.grid(row=8, column=1)
         save_exit_button.grid(row=8, column=2)
         exit_button.grid(row=8, column=3)
+
+    def statusChange(self, info: dict, itnum: str):
+        if info["status"] == 0:
+            info["status"] = 1
+        elif info["status"] == 1:
+            info["status"] = 2
+        else:
+            info["status"] = 0
+        self.clear()
+        self.showData(info, itnum)
 
     def exitShowData(self):
         self.clear()
