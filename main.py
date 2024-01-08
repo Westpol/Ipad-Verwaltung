@@ -26,7 +26,7 @@ class Backend:
         data = {itnum: {"moddate": int(time.time()), "version": version, "surname": surname, "name": name, "class": class_num, "subclass": subclass, 'repair': False, 'repairdate': 0, 'dosys': False, 'comments': ''}}
         self.Ipads["Ipads"].update(data)
 
-    def close(self):
+    def save(self):
         with open("Data/Ipads.json", "w") as file:
             json.dump(self.Ipads, file, indent=4)
 
@@ -145,8 +145,8 @@ class Frontend:
         history = tk.Button(self.root, text="History")
         history.grid(row=6, column=1, columnspan=3, sticky="w")
 
-        save_button = tk.Button(self.root, text="Save")
-        save_exit_button = tk.Button(self.root, text="Save + Exit")
+        save_button = tk.Button(self.root, text="Save", command=lambda: self.save_data(textfield.get("1.0", "end"), itnum))
+        save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.save_and_exit(textfield.get("1.0", "end"), itnum))
         exit_button = tk.Button(self.root, text="Exit", command=self.exit_show_data)
         save_button.grid(row=8, column=1)
         save_exit_button.grid(row=8, column=2)
@@ -161,7 +161,9 @@ class Frontend:
         self.exit_show_data()
 
     def save_data(self, textbox, itnum):
-        self.backend.Ipads["Ipads"][itnum]["comments"] = textbox
+        print(textbox)
+        self.backend.Ipads["Ipads"][itnum]["comments"] = textbox[0:len(textbox)-1:1]
+        self.backend.save()
 
     def clear(self):
         for widget in self.root.winfo_children():
@@ -181,7 +183,7 @@ class Frontend:
                 self.backend.keyData.append((event.char, time.time()))
 
     def close(self):
-        self.backend.close()
+        self.backend.save()
 
     def mainloop(self):
         self.root.mainloop()
