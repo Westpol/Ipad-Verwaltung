@@ -49,12 +49,15 @@ class Backend:
         temp_string = ""
 
         for i in reversed(range(0, len(self.keyData) - 1)):
-            if 0.013 < time_delta - self.keyData[i][1] < 0.019:
+            if 0.005 < time_delta - self.keyData[i][1] < 0.025:
                 temp_string += self.keyData[i][0]
             else:
-                break
+                if time_delta - self.keyData[i][1] > 0.01:
+                    break
+                else:
+                    if self.keyData[i][0] != "":
+                        temp_string += self.keyData[i][0]
             time_delta = self.keyData[i][1]
-            print(temp_string)
         self.itnum = temp_string[::-1]
 
         return self.itnum
