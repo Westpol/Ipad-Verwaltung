@@ -54,6 +54,7 @@ class Backend:
             else:
                 break
             time_delta = self.keyData[i][1]
+            print(temp_string)
         self.itnum = temp_string[::-1]
 
         return self.itnum
