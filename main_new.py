@@ -9,6 +9,7 @@ Backend is ONLY used as the json Interface
 at the beninging, the data is stored in a dict variable, and saved when saved button is pressed 
 
 - Status label in frontend.showData über tk.stringVar ändern und nicht durch reset und call von showData
+- textbox and state shouldn't be saved by changing the status
 '''
 
 
@@ -83,11 +84,11 @@ class Frontend:
         sub_menu.add_cascade(label="Export .xlsx")
 
     def welcomeScreen(self):
+        self.accept_scan = True
         welcome_screen = tk.Label(self.root, text="Scan Ipad to see Information...", font=("Arial", 30))
         welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
         manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
         manual_search.pack(anchor="w", side="bottom")
-        self.accept_scan = True
 
     def showData(self, infos: dict, itnum: str):
         self.accept_scan = False
@@ -120,11 +121,11 @@ class Frontend:
         else:
             status = tk.Label(self.root, text=str("Status:  Standard"))
 
-        history = tk.Button(self.root, text="Status ändern", command=lambda: self.statusChange(infos, itnum))
+        history = tk.Button(self.root, text="Status ändern", command=lambda: self.statusChange(infos, textfield.get("1.0", "end"), itnum))
 
         save_button = tk.Button(self.root, text="Save", command=lambda: self.saveData(infos, textfield.get("1.0", "end"), itnum))
         save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.saveAndExit(infos, textfield.get("1.0", "end"), itnum))
-        exit_button = tk.Button(self.root, text="Exit", command=self.exitShowData)
+        exit_button = tk.Button(self.root, text="Exit", command=lambda: self.exitShowData())
 
         textfield.grid(row=1, column=0, rowspan=7, padx="20")
         notes.grid(row=0, column=0, sticky="w")
@@ -140,7 +141,8 @@ class Frontend:
         save_exit_button.grid(row=8, column=2)
         exit_button.grid(row=8, column=3)
 
-    def statusChange(self, info: dict, itnum: str):
+    def statusChange(self, info: dict, textbox: str, itnum: str):
+        info["comments"] = textbox[0:len(textbox)-1:1]
         if info["status"] == 0:
             info["status"] = 1
         elif info["status"] == 1:
