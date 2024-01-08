@@ -93,28 +93,23 @@ class Frontend:
         self.root.columnconfigure(0, weight=2)
         self.root.columnconfigure((1, 2, 3), weight=1)
 
+        notes = tk.Label(self.root, text="Anmerkungen:", font=("Arial", 15))
         textfield = ScrolledText(self.root)
         textfield.insert("1.0", str(infos["comments"]))
-        textfield.grid(row=1, column=0, rowspan=7, padx="20")
-        notes = tk.Label(self.root, text="Anmerkungen:", font=("Arial", 15))
-        notes.grid(row=0, column=0, sticky="w")
 
         user = tk.Label(self.root, text="Besitzer:", font=("Arial", 15))
-        user.grid(row=0, column=1, columnspan=3, sticky="w")
         name = tk.Label(self.root, text=str("Name:  " + infos["surname"] + " " + infos["name"]))
-        name.grid(row=1, column=1, columnspan=3, sticky="w")
+
         if infos["subclass"] is not None:
             classs = tk.Label(self.root, text=str("Klasse:  " + str(infos["class"]) + "." + str(infos["subclass"])))
         else:
             classs = tk.Label(self.root, text=str("Klasse:  " + str(infos["class"])))
-        classs.grid(row=2, column=1, columnspan=3, sticky="w")
+
         teacher = tk.Label(self.root, text=str("Lehrer:  " + infos["teacher"]))
-        teacher.grid(row=3, column=1, columnspan=2, sticky="w")
+
         besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten")
-        besitzer_bearbeiten.grid(row=3, column=3, sticky="w")
 
         device = tk.Label(self.root, text="Gerät:", font=("Arial", 15))
-        device.grid(row=4, column=1, columnspan=3, sticky="w")
 
         if infos["repair"] is not False:
             status = tk.Label(self.root, text=str("Status:  In Reperatur"))
@@ -122,14 +117,23 @@ class Frontend:
             status = tk.Label(self.root, text=str("Status:  Bei Dosys eingesendet"))
         else:
             status = tk.Label(self.root, text=str("Status:  Standard"))
-        status.grid(row=5, column=1, columnspan=3, sticky="w")
 
         history = tk.Button(self.root, text="History")
-        history.grid(row=6, column=1, columnspan=3, sticky="w")
 
         save_button = tk.Button(self.root, text="Save", command=lambda: self.saveData(infos, textfield.get("1.0", "end"), itnum))
         save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.saveAndExit(infos, textfield.get("1.0", "end"), itnum))
         exit_button = tk.Button(self.root, text="Exit", command=self.exitShowData)
+
+        textfield.grid(row=1, column=0, rowspan=7, padx="20")
+        notes.grid(row=0, column=0, sticky="w")
+        user.grid(row=0, column=1, columnspan=3, sticky="w")
+        name.grid(row=1, column=1, columnspan=3, sticky="w")
+        classs.grid(row=2, column=1, columnspan=3, sticky="w")
+        teacher.grid(row=3, column=1, columnspan=2, sticky="w")
+        besitzer_bearbeiten.grid(row=3, column=3, sticky="w")
+        device.grid(row=4, column=1, columnspan=3, sticky="w")
+        status.grid(row=5, column=1, columnspan=3, sticky="w")
+        history.grid(row=6, column=1, columnspan=3, sticky="w")
         save_button.grid(row=8, column=1)
         save_exit_button.grid(row=8, column=2)
         exit_button.grid(row=8, column=3)
