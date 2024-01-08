@@ -43,12 +43,112 @@ class Backend:
 class Frontend:
 
     def __init__(self):
+        self.backend = Backend()
+
         self.keyData = []
         self.accept_scan = False
-
-    def get_scan(self):     # returns itnum
         self.itnum = ""
 
+        self.root = tk.Tk()
+        self.root.geometry("{}x{}".format(960, 540))
+        self.root.minsize(960, 540)
+        self.root.maxsize(960, 540)
+        self.root.bind("<KeyPress>", self.keylogger)
+
+        self.dropdownMenu()
+        self.welcomeScreen()
+
+    def begin(self):
+        self.root.mainloop()
+        self.backend.save()
+
+    def clear(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        self.dropdownMenu()
+
+    def dropdownMenu(self):
+        menu = tk.Menu(self.root)
+        self.root.config(menu=menu)
+
+        sub_menu = tk.Menu()
+
+        menu.add_cascade(label="file", menu=sub_menu)
+
+        sub_menu.add_cascade(label="Import Database")
+        sub_menu.add_cascade(label="Export Database")
+        sub_menu.add_cascade(label="New Database")
+        sub_menu.add_cascade(label="Export .xlsx")
+
+    def welcomeScreen(self):
+        welcome_screen = tk.Label(self.root, text="Scan Ipad to see Information...", font=("Arial", 30))
+        welcome_screen.place(relx=.5, rely=.4, anchor=tk.CENTER)
+        manual_search = tk.Button(self.root, text="Manual Search (in Progress...)", font=("Arial", 15))
+        manual_search.pack(anchor="w", side="bottom")
+        self.accept_scan = True
+
+    def showData(self, infos: dict, itnum: str):
+        self.accept_scan = False
+
+        self.root.columnconfigure(0, weight=2)
+        self.root.columnconfigure((1, 2, 3), weight=1)
+
+        textfield = ScrolledText(self.root)
+        textfield.insert("1.0", str(infos["comments"]))
+        textfield.grid(row=1, column=0, rowspan=7, padx="20")
+        notes = tk.Label(self.root, text="Anmerkungen:", font=("Arial", 15))
+        notes.grid(row=0, column=0, sticky="w")
+
+        user = tk.Label(self.root, text="Besitzer:", font=("Arial", 15))
+        user.grid(row=0, column=1, columnspan=3, sticky="w")
+        name = tk.Label(self.root, text=str("Name:  " + infos["surname"] + " " + infos["name"]))
+        name.grid(row=1, column=1, columnspan=3, sticky="w")
+        if infos["subclass"] is not None:
+            classs = tk.Label(self.root, text=str("Klasse:  " + str(infos["class"]) + "." + str(infos["subclass"])))
+        else:
+            classs = tk.Label(self.root, text=str("Klasse:  " + str(infos["class"])))
+        classs.grid(row=2, column=1, columnspan=3, sticky="w")
+        teacher = tk.Label(self.root, text=str("Lehrer:  " + infos["teacher"]))
+        teacher.grid(row=3, column=1, columnspan=2, sticky="w")
+        besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten")
+        besitzer_bearbeiten.grid(row=3, column=3, sticky="w")
+
+        device = tk.Label(self.root, text="Gerät:", font=("Arial", 15))
+        device.grid(row=4, column=1, columnspan=3, sticky="w")
+
+        if infos["repair"] is not False:
+            status = tk.Label(self.root, text=str("Status:  In Reperatur"))
+        elif infos["dosys"] is not False:
+            status = tk.Label(self.root, text=str("Status:  Bei Dosys eingesendet"))
+        else:
+            status = tk.Label(self.root, text=str("Status:  Standard"))
+        status.grid(row=5, column=1, columnspan=3, sticky="w")
+
+        history = tk.Button(self.root, text="History")
+        history.grid(row=6, column=1, columnspan=3, sticky="w")
+
+        save_button = tk.Button(self.root, text="Save", command=lambda: self.saveData(infos, textfield.get("1.0", "end"), itnum))
+        save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.saveAndExit(infos, textfield.get("1.0", "end"), itnum))
+        exit_button = tk.Button(self.root, text="Exit", command=self.exitShowData)
+        save_button.grid(row=8, column=1)
+        save_exit_button.grid(row=8, column=2)
+        exit_button.grid(row=8, column=3)
+
+    def exitShowData(self):
+        self.clear()
+        self.welcomeScreen()
+
+    def saveAndExit(self, infos: dict, textbox: str, itnum: str):
+        self.saveData(infos, textbox, itnum)
+        self.exitShowData()
+
+    def saveData(self, infos: dict, textbox: str, itnum: str):
+        infos["comments"] = textbox[0:len(textbox)-1:1]
+        self.backend.device_dict["Ipads"][itnum] = infos
+        self.backend.save()
+
+    def getScan(self):     # returns itnum
+        self.itnum = ""
         time_delta = self.keyData[len(self.keyData) - 1][1]
         temp_string = ""
 
@@ -71,8 +171,17 @@ class Frontend:
         else:
             return None
 
-    def begin(self):
-        pass
+    def keylogger(self, event):
+        if self.accept_scan:
+            if event.keysym == "Return":
+                self.keyData.append(("\n", time.time()))
+                itnum = self.getScan()
+                if itnum is not None:
+                    self.clear()
+                    print(itnum)
+                    self.showData(self.backend.getIpad(itnum), itnum)
+            else:
+                self.keyData.append((event.char, time.time()))
 
 
 if __name__ == "__main__":
