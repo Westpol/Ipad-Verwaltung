@@ -7,7 +7,6 @@ import time
 TODO:
 - sort variables (frontend / backend)
 - assign every job to frontend / backend
-- show the info in a useful way
 '''
 
 
