@@ -1,6 +1,6 @@
 {
     "moddate": 1702976491,
-    "opendate": 1703522084,
+    "opendate": 1704733665,
     "Ipads": {
         "IT18563": {
             "moddate": 1223,
@@ -9,6 +9,7 @@
             "name": "Sch\u00f6rmann",
             "class": 13,
             "subclass": null,
+            "teacher": "bam/dee",
             "repair": false,
             "repairdate": 122,
             "dosys": false,
@@ -21,6 +22,7 @@
             "name": "Degenhardt",
             "class": 7,
             "subclass": 5,
+            "teacher": "bam/dee",
             "repair": false,
             "repairdate": 122,
             "dosys": false,
@@ -33,8 +35,35 @@
             "name": "asf",
             "class": "agd",
             "subclass": "",
+            "teacher": "bam/dee",
             "repair": false,
             "repairdate": 0,
+            "dosys": false,
+            "comments": ""
+        },
+        "IT185608": {
+            "moddate": 1223,
+            "version": "",
+            "surname": "Benno",
+            "name": "Sch\u00f6rmann",
+            "class": 13,
+            "subclass": null,
+            "teacher": "bam/dee",
+            "repair": false,
+            "repairdate": 122,
+            "dosys": false,
+            "comments": "luldfhdghd\nIT185608\nIT185608\nIT185608\nIT185608\nIT18560kjholn\nsdgfsg\nApple Pencil ist kaputt"
+        },
+        "20426071": {
+            "moddate": 1223,
+            "version": "",
+            "surname": "Benno",
+            "name": "Sch\u00f6rmann",
+            "class": 7,
+            "subclass": 5,
+            "teacher": "bam/dee",
+            "repair": false,
+            "repairdate": 122,
             "dosys": false,
             "comments": ""
         }
