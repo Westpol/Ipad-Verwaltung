@@ -1,6 +1,6 @@
 {
     "moddate": 1702976491,
-    "opendate": 1704799646,
+    "opendate": 1704802721,
     "Ipads": {
         "IT18563": {
             "moddate": 1223,
@@ -73,7 +73,7 @@
             "class": 7,
             "subclass": 5,
             "teacher": "bam/dee",
-            "status": 2,
+            "status": 1,
             "comments": ""
         }
     },

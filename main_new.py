@@ -2,6 +2,7 @@ import json
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import time
+import copy
 
 # TODO
 '''
@@ -36,7 +37,7 @@ class Backend:
 
     def getIpad(self, itnum: str):      # returns dict with the Information stored about the Ipad
         if self.inList(itnum):
-            return self.device_dict["Ipads"][itnum]
+            return copy.deepcopy(self.device_dict["Ipads"][itnum])
         raise "given IT-number not in system, bofore requesting directly, please check with inlist()"
 
     def delete_ipad(self, itnum: str):
