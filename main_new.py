@@ -110,7 +110,7 @@ class Frontend:
 
         teacher = tk.Label(self.root, text=str("Lehrer:  " + infos["teacher"]))
 
-        besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten")
+        besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten", command=self.editUserWindow)
 
         device = tk.Label(self.root, text="Gerät:", font=("Arial", 15))
 
@@ -140,6 +140,10 @@ class Frontend:
         save_button.grid(row=8, column=1)
         save_exit_button.grid(row=8, column=2)
         exit_button.grid(row=8, column=3)
+
+    def editUserWindow(self, info: dict):
+        childWindow = tk.Toplevel(self.root)
+
 
     def statusChange(self, info: dict, textbox: str, itnum: str):
         info["comments"] = textbox[0:len(textbox)-1:1]

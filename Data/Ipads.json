@@ -1,6 +1,6 @@
 {
     "moddate": 1702976491,
-    "opendate": 1704750539,
+    "opendate": 1704786773,
     "Ipads": {
         "IT18563": {
             "moddate": 1223,
@@ -63,6 +63,17 @@
             "subclass": 5,
             "teacher": "bam/dee",
             "status": 2,
+            "comments": ""
+        },
+        "3057640240188": {
+            "moddate": 1223,
+            "version": "",
+            "surname": "Benno",
+            "name": "Sch\u00f6rmann",
+            "class": 7,
+            "subclass": 5,
+            "teacher": "bam/dee",
+            "status": 0,
             "comments": ""
         }
     },
