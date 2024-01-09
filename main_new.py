@@ -91,6 +91,27 @@ class Frontend:
         manual_search.pack(anchor="w", side="bottom")
 
     def showData(self, infos: dict, itnum: str):
+
+        def changeStatus():
+            if infos["status"] == 0:
+                infos["status"] = 1
+            elif infos["status"] == 1:
+                infos["status"] = 2
+            else:
+                infos["status"] = 0
+            setStatus()
+
+        def setStatus():
+            if infos["status"] == 1:
+                statusVar.set("Status:  In Reperatur")
+            elif infos["status"] == 2:
+                statusVar.set("Status:  Bei Dosys eingesendet")
+            else:
+                statusVar.set("Status:  Standard")
+
+        def editUserWindow():
+            childWindow = tk.Toplevel(self.root)
+
         self.accept_scan = False
 
         self.root.columnconfigure(0, weight=2)
@@ -110,18 +131,16 @@ class Frontend:
 
         teacher = tk.Label(self.root, text=str("Lehrer:  " + infos["teacher"]))
 
-        besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten", command=self.editUserWindow)
+        besitzer_bearbeiten = tk.Button(self.root, text="Bearbeiten", command=editUserWindow)
 
         device = tk.Label(self.root, text="Gerät:", font=("Arial", 15))
 
-        if infos["status"] == 1:
-            status = tk.Label(self.root, text=str("Status:  In Reperatur"))
-        elif infos["status"] == 2:
-            status = tk.Label(self.root, text=str("Status:  Bei Dosys eingesendet"))
-        else:
-            status = tk.Label(self.root, text=str("Status:  Standard"))
+        statusVar = tk.StringVar(self.root, "")
+        setStatus()
 
-        history = tk.Button(self.root, text="Status ändern", command=lambda: self.statusChange(infos, textfield.get("1.0", "end"), itnum))
+        status = tk.Label(self.root, textvariable=statusVar)
+
+        history = tk.Button(self.root, text="Status ändern", command=changeStatus)
 
         save_button = tk.Button(self.root, text="Save", command=lambda: self.saveData(infos, textfield.get("1.0", "end"), itnum))
         save_exit_button = tk.Button(self.root, text="Save + Exit", command=lambda: self.saveAndExit(infos, textfield.get("1.0", "end"), itnum))
@@ -140,21 +159,6 @@ class Frontend:
         save_button.grid(row=8, column=1)
         save_exit_button.grid(row=8, column=2)
         exit_button.grid(row=8, column=3)
-
-    def editUserWindow(self, info: dict):
-        childWindow = tk.Toplevel(self.root)
-
-
-    def statusChange(self, info: dict, textbox: str, itnum: str):
-        info["comments"] = textbox[0:len(textbox)-1:1]
-        if info["status"] == 0:
-            info["status"] = 1
-        elif info["status"] == 1:
-            info["status"] = 2
-        else:
-            info["status"] = 0
-        self.clear()
-        self.showData(info, itnum)
 
     def exitShowData(self):
         self.clear()
